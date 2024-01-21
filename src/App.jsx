@@ -1,10 +1,9 @@
-import react from 'react'
-import Tetris from './components/Tetris'
-
+import './styles.css'
+import Game from './components/Game'
 const App = () => {
     return (
-        <div className="App">
-            <Tetris />
+        <div className='App'>
+            <Game rows={20} cols={10} />
         </div>
     )
 }
