@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react'
+﻿import { useState } from 'react'
 import {StyledTetrisWrapper, StyledTetris} from "./styles/StyledTetris";
 // Components
 import Stage from './Stage'
@@ -38,11 +38,11 @@ const Tetris = () => {
     // 40 - down arrow.
     const move = ({ keyCode }) => {
         if (!gameOver) {
-            if (keyCode == 37) {
+            if (keyCode === 37) {
                 movePlayer(-1)
-            } else if  (keyCode == 39) {
+            } else if  (keyCode === 39) {
                 movePlayer(1)
-            } else if (keyCode == 40) {
+            } else if (keyCode === 40) {
                 dropPlayer()
             }
         }
@@ -62,7 +62,7 @@ const Tetris = () => {
                     <Display text="Level" />
                 </div>
                 )}
-                <StartButton onClick={startGame} />
+                <StartButton callback={startGame} />
             </aside>
             </StyledTetris>
         </StyledTetrisWrapper>
