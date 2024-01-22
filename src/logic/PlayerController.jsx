@@ -25,7 +25,7 @@ const attemptRotation = ({ board, player, setPlayer }) => {
     }
 }
 
-const movePlayer = ({ delta, position, shape, board }) => {
+export const movePlayer = ({ delta, position, shape, board }) => {
     const desiredNextPosition = {
         row: position.row + delta.row,
         col: position.col + delta.col
