@@ -1,6 +1,7 @@
 ﻿import './styles/GameController.css'
 
 import { Action, actionForKey } from '../logic/InputController'
+import { playerController } from '../logic/PlayerController'
 const GameController = ({
     board, 
     gameStats, 
@@ -15,6 +16,18 @@ const GameController = ({
         }
     }
     const onKeyDown = ({ code }) => {
+        const action = actionForKey(code)
+        handleInput({ action })
+    }
+    
+    const handleInput = ({ action }) => {
+        playerController({
+            action,
+            board,
+            player,
+            setPlayer,
+            setGameOver
+        })
     }
     return (
         <input 
