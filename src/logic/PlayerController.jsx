@@ -24,6 +24,66 @@ const attemptRotation = ({ board, player, setPlayer }) => {
         return false
     }
 }
+
+const movePlayer = ({ delta, position, shape, board }) => {
+    const desiredNextPosition = {
+        row: position.row + delta.row,
+        col: position.col + delta.col
+    }
+    
+    const collided = hasCollision({
+        board, 
+        position: desiredNextPosition, 
+        shape
+    })
+    
+    const isOnBoard = isWithinBoard({
+        board, 
+        position: desiredNextPosition,
+        shape
+    })
+    
+    const preventMove = !isOnBoard || (isOnBoard && collided)
+    const isMovingDown = delta.row > 0
+    const nextPosition = preventMove ? position : desiredNextPosition
+    const isHit = isMovingDown && (collided || !isOnBoard)
+    
+    return { collided: isHit, nextPosition }
+    
+}
+const attemptMovement = ({ board, action, player, setPlayer, setGameOver }) => {
+    const delta = { row: 0, col: 0 }
+    let isFastDropping = false
+    
+    if (action === Action.FastDrop) {
+        isFastDropping = true
+    } else if (action === Action.SlowDrop) {
+        delta.row += 1
+    } else if (action === Action.Left) {
+        delta.col -= 1
+    } else if (action === Action.Right) {
+        delta.col += 1
+    }
+    
+    const { collided, nextPosition} = movePlayer({
+        delta, 
+        position: player.position,
+        shape: player.tetromino.shape,
+        board
+    })
+    
+    const isGameOver = collided && player.position.row === 0
+    if (isGameOver) {
+        setGameOver(true)
+    }
+    
+    setPlayer({
+        ...player,
+        collided,
+        isFastDropping,
+        position: nextPosition
+    })
+}
 export const playerController = ({
     action,
     board,
@@ -34,5 +94,7 @@ export const playerController = ({
     if (!action) return
     if (action === Action.Rotate) {
         attemptRotation({ board, player, setPlayer })
+    } else {
+        attemptMovement({ board, action, player, setPlayer, setGameOver })
     }
 }
