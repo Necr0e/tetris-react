@@ -22,7 +22,7 @@ const Preview = ({ tetromino, index }) => {
     return (
         <div className='Preview' style={style}>
             <div className='Preview-board'>
-                {board.rows.map((row, y) =>
+                {board.rows.map((row) =>
                 row.map((cell, x) => (
                     <BoardCell key={x * board.size.cols + x} cell={cell} />
                 )))}

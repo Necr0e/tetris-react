@@ -8,10 +8,9 @@ const Board = ({ board }) => {
         gridTemplateRows: `repeat(${board.size.rows}, 1fr)`,
         gridTemplateColumns: `repeat(${board.size.cols}, 1fr`
     }
-    
     return (
      <div className='Board' style={boardStyles}>
-         {board.rows.map((row, y) =>
+         {board.rows.map((row) =>
          row.map((cell, x) => (
              <BoardCell key={x * board.size.cols + x} cell={cell} />
              ))

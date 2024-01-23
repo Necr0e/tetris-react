@@ -41,6 +41,7 @@ export const nextBoard = ({ board, player, resetPlayer, addLinesCleared }) => {
         shape: tetromino.shape
     })
 
+    // Place tetromino ghost
     const className = `${tetromino.className} ${player.isFastDropping ? '' : 'ghost'}`
     rows = transferToBoard({
         className,
@@ -50,6 +51,7 @@ export const nextBoard = ({ board, player, resetPlayer, addLinesCleared }) => {
         shape: tetromino.shape
     })
 
+    // Place the tetromino and mark cells as collided
     if (!player.isFastDropping) {
         rows = transferToBoard({
             className: tetromino.className,
@@ -59,7 +61,24 @@ export const nextBoard = ({ board, player, resetPlayer, addLinesCleared }) => {
             shape: tetromino.shape
         })
     }
+    // Check for cleared lines
+    const blankRow = rows[0].map((_) => ({ ...defaultCell }))
+    let linesCleared = 0
+    rows = rows.reduce((acc, row) => {
+        if (row.every((col) => col.occupied)) {
+            linesCleared++
+            acc.unshift([...blankRow])
+        } else {
+            acc.push(row)
+        }
+        
+        return acc
+    }, [])
 
+    if (linesCleared > 0 ) {
+        addLinesCleared(linesCleared)
+    }
+    
     if (player.collided || player.isFastDropping) {
         resetPlayer()
     }
